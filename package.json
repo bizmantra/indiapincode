@@ -3,10 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "next lint",
+    "postinstall": "curl -L -o pincodes.sqlite 'https://drive.google.com/uc?export=download&id=1En14kDFbYve09_gIpoAY39UwXD0rugOC' || echo 'Database download failed, using existing file'"
   },
   "dependencies": {
     "better-sqlite3": "^12.5.0",
