@@ -41,24 +41,26 @@ export default function Home() {
           <div style={{
             display: 'flex',
             justifyContent: 'center',
-            gap: '20px',
+            gap: '15px',
             marginTop: '30px',
             flexWrap: 'wrap',
-            fontSize: '0.95rem'
+            fontSize: '0.9rem',
+            maxWidth: '100%',
+            padding: '0 10px'
           }}>
-            <a href="#popular-pincodes" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 500 }}>
+            <a href="#popular-pincodes" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 500, whiteSpace: 'nowrap' }}>
               📍 Popular Pincodes
             </a>
-            <span style={{ color: '#cbd5e1' }}>|</span>
-            <a href="#popular-localities" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 500 }}>
+            <span style={{ color: '#cbd5e1', display: 'none' }} className="nav-separator">|</span>
+            <a href="#popular-localities" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 500, whiteSpace: 'nowrap' }}>
               📮 Popular Localities
             </a>
-            <span style={{ color: '#cbd5e1' }}>|</span>
-            <a href="#popular-banks" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 500 }}>
+            <span style={{ color: '#cbd5e1', display: 'none' }} className="nav-separator">|</span>
+            <a href="#popular-banks" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 500, whiteSpace: 'nowrap' }}>
               🏢 Popular Banks
             </a>
-            <span style={{ color: '#cbd5e1' }}>|</span>
-            <a href="#browse-states" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 500 }}>
+            <span style={{ color: '#cbd5e1', display: 'none' }} className="nav-separator">|</span>
+            <a href="#browse-states" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 500, whiteSpace: 'nowrap' }}>
               🗺️ Browse by State
             </a>
           </div>
