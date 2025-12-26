@@ -129,7 +129,7 @@ export default function Home() {
               className="card glass"
               style={{ padding: '20px' }}
             >
-              <h3 style={{ fontSize: '1rem', color: 'var(--primary)', marginBottom: '8px' }}>{bank.bank_name}</h3>
+              <h3 style={{ fontSize: '1rem', color: 'var(--primary)', marginBottom: '8px' }}>{bank.bank}</h3>
               <p style={{ fontSize: '0.85rem', marginBottom: 0, color: '#64748b' }}>
                 {bank.branch_count.toLocaleString()} branches
               </p>
