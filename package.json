@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "curl -L -o pincodes.sqlite 'https://drive.usercontent.google.com/download?id=1En14kDFbYve09_gIpoAY39UwXD0rugOC&export=download&confirm=t' || echo 'Database download failed'"
+    "postinstall": "curl -L -o pincodes.sqlite 'https://hr1weprpkpipjvef.public.blob.vercel-storage.com/pincodes.sqlite'"
   },
   "dependencies": {
     "better-sqlite3": "^12.5.0",
