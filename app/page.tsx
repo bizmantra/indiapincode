@@ -153,7 +153,7 @@ export default function Home() {
             >
               <h3 style={{ fontSize: '1rem', color: 'var(--primary)', marginBottom: '8px' }}>{state.name}</h3>
               <p style={{ fontSize: '0.85rem', marginBottom: 0, color: '#64748b' }}>
-                {state.pincode_count.toLocaleString()} pincodes
+                View all districts & pincodes
               </p>
             </Link>
           ))}
