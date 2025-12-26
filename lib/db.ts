@@ -202,33 +202,40 @@ export function initializeSearchIndex() {
         // Check if index needs population (simplified check)
         const count = db.prepare('SELECT count(*) as count FROM search_index').get() as { count: number };
 
-        // Check if we need to re-index for Bengaluru mapping (migration)
-        const hasSynonyms = db.prepare("SELECT count(*) as count FROM search_index WHERE subtitle LIKE '%(Bangalore)%'").get() as { count: number };
+        // Check if we need to re-index/re-normalize (migration)
+        // We check if 'Bangalore' still exists in the district field of pincode_summary
+        const needsNormalization = db.prepare("SELECT count(*) as count FROM pincode_summary WHERE district LIKE '%Bangalore%'").get() as { count: number };
 
-        if (count.count > 0 && hasSynonyms.count === 0) {
-            console.log('Old index detected. Re-indexing for Bengaluru mapping...');
-            db.exec('DROP TABLE search_index;');
+        if (count.count > 0 && needsNormalization.count > 0) {
+            console.log('Detected Bangalore strings. Running global Bengaluru normalization...');
+            db.exec(`
+                -- Global search and replace for display text
+                UPDATE pincode_summary SET district = REPLACE(REPLACE(district, 'Bangalore', 'Bengaluru'), 'BANGALORE', 'BENGALURU');
+                UPDATE pincode_summary SET taluk = REPLACE(REPLACE(taluk, 'Bangalore', 'Bengaluru'), 'BANGALORE', 'BENGALURU');
+                
+                UPDATE post_offices SET officename = REPLACE(REPLACE(officename, 'Bangalore', 'Bengaluru'), 'BANGALORE', 'BENGALURU');
+                UPDATE post_offices SET districtname = REPLACE(REPLACE(districtname, 'Bangalore', 'Bengaluru'), 'BANGALORE', 'BENGALURU');
+                UPDATE post_offices SET taluk = REPLACE(REPLACE(taluk, 'Bangalore', 'Bengaluru'), 'BANGALORE', 'BENGALURU');
+                
+                UPDATE neighborhoods SET name = REPLACE(REPLACE(name, 'Bangalore', 'Bengaluru'), 'BANGALORE', 'BENGALURU');
+                UPDATE neighborhoods SET district = REPLACE(REPLACE(district, 'Bangalore', 'Bengaluru'), 'BANGALORE', 'BENGALURU');
+                
+                UPDATE banks SET branch = REPLACE(REPLACE(branch, 'Bangalore', 'Bengaluru'), 'BANGALORE', 'BENGALURU');
+                UPDATE banks SET address = REPLACE(REPLACE(address, 'Bangalore', 'Bengaluru'), 'BANGALORE', 'BENGALURU');
+                UPDATE banks SET district = REPLACE(REPLACE(district, 'Bangalore', 'Bengaluru'), 'BANGALORE', 'BENGALURU');
+                UPDATE banks SET city = REPLACE(REPLACE(city, 'Bangalore', 'Bengaluru'), 'BANGALORE', 'BENGALURU');
+                
+                UPDATE districts SET name = REPLACE(REPLACE(name, 'Bangalore', 'Bengaluru'), 'BANGALORE', 'BENGALURU');
+                UPDATE states SET name = REPLACE(REPLACE(name, 'Bangalore', 'Bengaluru'), 'BANGALORE', 'BENGALURU');
+
+                -- Force re-index since display text changed
+                DROP TABLE search_index;
+            `);
             initializeSearchIndex(); // Re-run
             return;
         }
 
         if (count.count === 0) {
-            console.log('Normalizing city names (Bangalore -> Bengaluru)...');
-            db.exec(`
-                -- Normalize district names to Bengaluru
-                UPDATE pincode_summary SET district = 'Bengaluru' WHERE district = 'Bangalore';
-                UPDATE pincode_summary SET district = 'Bengaluru Rural' WHERE district = 'Bangalore Rural';
-                
-                UPDATE post_offices SET districtname = 'Bengaluru' WHERE districtname = 'Bangalore';
-                UPDATE post_offices SET districtname = 'Bengaluru Rural' WHERE districtname = 'Bangalore Rural';
-                
-                UPDATE neighborhoods SET district = 'Bengaluru' WHERE district = 'Bangalore';
-                UPDATE neighborhoods SET district = 'Bengaluru Rural' WHERE district = 'Bangalore Rural';
-                
-                UPDATE banks SET district = 'BENGALURU' WHERE district = 'BANGALORE';
-                UPDATE banks SET district = 'BENGALURU' WHERE district = 'Bangalore';
-            `);
-
             console.log('Populating search index...');
             db.exec(`
                 INSERT INTO search_index(content_id, type, title, subtitle, slug)
