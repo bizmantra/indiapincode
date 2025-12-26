@@ -12,7 +12,7 @@ export default function Home() {
   const popularPincodes = [
     { pincode: "110001", city: "New Delhi", state: "Delhi" },
     { pincode: "400001", city: "Mumbai", state: "Maharashtra" },
-    { pincode: "560001", city: "Bangalore", state: "Karnataka" },
+    { pincode: "560001", city: "Bengaluru", state: "Karnataka" },
     { pincode: "600001", city: "Chennai", state: "Tamil Nadu" },
     { pincode: "700001", city: "Kolkata", state: "West Bengal" },
     { pincode: "500001", city: "Hyderabad", state: "Telangana" },

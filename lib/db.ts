@@ -79,7 +79,7 @@ export function getPopularNeighborhoods(limit: number = 12) {
         SELECT name, pincode, slug 
         FROM neighborhoods 
         WHERE pincode IN (
-            '560001', '560034', '560095', '560076', -- Bangalore
+            '560001', '560034', '560095', '560076', -- Bengaluru
             '400001', '400053', '400093', '400058', -- Mumbai
             '110001', '110016', '110019', '110092', -- Delhi
             '600001', '600028', '600041' -- Chennai
