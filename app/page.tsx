@@ -146,12 +146,12 @@ export default function Home() {
         <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '16px', margin: 0 }}>
           {topStates.map((state) => (
             <Link
-              key={state.state_slug}
-              href={`/state/${state.state_slug}`}
+              key={state.slug}
+              href={`/state/${state.slug}`}
               className="card glass"
               style={{ padding: '20px' }}
             >
-              <h3 style={{ fontSize: '1rem', color: 'var(--primary)', marginBottom: '8px' }}>{state.state}</h3>
+              <h3 style={{ fontSize: '1rem', color: 'var(--primary)', marginBottom: '8px' }}>{state.name}</h3>
               <p style={{ fontSize: '0.85rem', marginBottom: 0, color: '#64748b' }}>
                 {state.pincode_count.toLocaleString()} pincodes
               </p>
