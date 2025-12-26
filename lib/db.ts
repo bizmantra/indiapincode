@@ -202,16 +202,38 @@ export function initializeSearchIndex() {
         // Check if index needs population (simplified check)
         const count = db.prepare('SELECT count(*) as count FROM search_index').get() as { count: number };
         if (count.count === 0) {
+            console.log('Normalizing city names (Bangalore -> Bengaluru)...');
+            db.exec(`
+                -- Normalize district names to Bengaluru
+                UPDATE pincode_summary SET district = 'Bengaluru' WHERE district = 'Bangalore';
+                UPDATE pincode_summary SET district = 'Bengaluru Rural' WHERE district = 'Bangalore Rural';
+                
+                UPDATE post_offices SET districtname = 'Bengaluru' WHERE districtname = 'Bangalore';
+                UPDATE post_offices SET districtname = 'Bengaluru Rural' WHERE districtname = 'Bangalore Rural';
+                
+                UPDATE neighborhoods SET district = 'Bengaluru' WHERE district = 'Bangalore';
+                UPDATE neighborhoods SET district = 'Bengaluru Rural' WHERE district = 'Bangalore Rural';
+                
+                UPDATE banks SET district = 'BENGALURU' WHERE district = 'BANGALORE';
+                UPDATE banks SET district = 'BENGALURU' WHERE district = 'Bangalore';
+            `);
+
             console.log('Populating search index...');
             db.exec(`
                 INSERT INTO search_index(content_id, type, title, subtitle, slug)
-                SELECT pincode, 'pincode', pincode, district || ', ' || state, pincode FROM pincode_summary;
+                SELECT pincode, 'pincode', pincode, 
+                       district || (CASE WHEN district LIKE '%Bengaluru%' THEN ' (Bangalore)' ELSE '' END) || ', ' || state, 
+                       pincode FROM pincode_summary;
                 
                 INSERT INTO search_index(content_id, type, title, subtitle, slug)
-                SELECT ifsc, 'bank', bank || ' - ' || branch, ifsc, ifsc FROM banks;
+                SELECT ifsc, 'bank', bank || ' - ' || branch, 
+                       ifsc || (CASE WHEN district LIKE '%BENGALURU%' OR district LIKE '%Bengaluru%' THEN ' (Bangalore)' ELSE '' END), 
+                       ifsc FROM banks;
                 
                 INSERT INTO search_index(content_id, type, title, subtitle, slug)
-                SELECT slug, 'area', name, district || ', ' || state, slug FROM neighborhoods;
+                SELECT slug, 'area', name, 
+                       district || (CASE WHEN district LIKE '%Bengaluru%' THEN ' (Bangalore)' ELSE '' END) || ', ' || state, 
+                       slug FROM neighborhoods;
             `);
             console.log('Search index populated successfully.');
         }
