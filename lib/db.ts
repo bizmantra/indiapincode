@@ -201,6 +201,17 @@ export function initializeSearchIndex() {
 
         // Check if index needs population (simplified check)
         const count = db.prepare('SELECT count(*) as count FROM search_index').get() as { count: number };
+
+        // Check if we need to re-index for Bengaluru mapping (migration)
+        const hasSynonyms = db.prepare("SELECT count(*) as count FROM search_index WHERE subtitle LIKE '%(Bangalore)%'").get() as { count: number };
+
+        if (count.count > 0 && hasSynonyms.count === 0) {
+            console.log('Old index detected. Re-indexing for Bengaluru mapping...');
+            db.exec('DROP TABLE search_index;');
+            initializeSearchIndex(); // Re-run
+            return;
+        }
+
         if (count.count === 0) {
             console.log('Normalizing city names (Bangalore -> Bengaluru)...');
             db.exec(`
