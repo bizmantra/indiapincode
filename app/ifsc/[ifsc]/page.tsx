@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import CopyButton from "@/components/CopyButton";
+import JsonLd, { generateFAQSchema, generateBreadcrumbSchema } from "@/components/JsonLd";
 
 export async function generateMetadata({ params }: { params: Promise<{ ifsc: string }> }): Promise<Metadata> {
     const { ifsc } = await params;
@@ -23,11 +24,38 @@ export default async function IFSCDetailPage({ params }: { params: Promise<{ ifs
         notFound();
     }
 
+    const domain = "https://indiapincode.org";
+    const breadcrumbSchema = generateBreadcrumbSchema([
+        { name: "Home", item: `${domain}/` },
+        { name: "Banks", item: `${domain}/bank` },
+        { name: bank.bank, item: `${domain}/bank/${bank.bank_slug}` },
+        { name: `${bank.ifsc} IFSC`, item: `${domain}/ifsc/${bank.ifsc}` }
+    ]);
+
+    const faqs = [
+        {
+            question: `What is the IFSC code for ${bank.bank} ${bank.branch}?`,
+            answer: `The IFSC code for ${bank.bank} ${bank.branch} is ${bank.ifsc}. This code is used for online fund transfers like NEFT, RTGS, and IMPS.`
+        },
+        {
+            question: `Where is the ${bank.bank} ${bank.branch} branch located?`,
+            answer: `The branch is located at: ${bank.address}. It serves the ${bank.district} district in ${bank.state}.`
+        },
+        {
+            question: `What is the branch code for ${bank.ifsc}?`,
+            answer: `The branch code is the last six characters of the IFSC code, which in this case is ${bank.ifsc.slice(-6)}.`
+        }
+    ];
+    const faqSchema = generateFAQSchema(faqs);
+
     // Cross-link to pincode if available
     const pincodeData = bank.pincode ? getPincodeDetail(bank.pincode) : null;
 
     return (
         <div className="container fade-in" style={{ paddingTop: '40px' }}>
+            <JsonLd data={breadcrumbSchema} />
+            <JsonLd data={faqSchema} />
+
             <nav className="breadcrumb">
                 <Link href="/">Home</Link>
                 <span>/</span>
@@ -39,7 +67,10 @@ export default async function IFSCDetailPage({ params }: { params: Promise<{ ifs
             </nav>
 
             <div style={{ textAlign: 'center', marginBottom: '60px' }}>
-                <h1 style={{ fontSize: '3.5rem', marginBottom: '0.5rem' }}>{bank.ifsc}</h1>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px', marginBottom: '10px' }}>
+                    <h1 style={{ fontSize: '3.5rem', margin: 0 }}>{bank.ifsc}</h1>
+                    <CopyButton code={bank.ifsc} label="IFSC Code" variant="icon" />
+                </div>
                 <p style={{ fontSize: '1.2rem', color: '#64748b' }}>
                     {bank.bank}, {bank.branch} Branch
                 </p>
@@ -58,6 +89,14 @@ export default async function IFSCDetailPage({ params }: { params: Promise<{ ifs
 
                             <div style={{ fontWeight: 600 }}>IFSC Code</div>
                             <div style={{ color: 'var(--primary)', fontWeight: 700 }}>{bank.ifsc}</div>
+
+                            <div style={{ fontWeight: 600 }}>Branch Code</div>
+                            <div>
+                                {bank.ifsc.slice(-6)}
+                                <span style={{ fontSize: '0.8rem', color: '#64748b', marginLeft: '8px', fontWeight: 400 }}>
+                                    (Last 6 characters of IFSC)
+                                </span>
+                            </div>
 
                             {bank.micr && (
                                 <>
@@ -98,15 +137,26 @@ export default async function IFSCDetailPage({ params }: { params: Promise<{ ifs
                     <section style={{ marginBottom: '60px' }}>
                         <h2>Banking FAQs</h2>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                            <div className="glass" style={{ padding: '20px' }}>
-                                <h4 style={{ marginBottom: '8px' }}>What is the IFSC code for {bank.bank} {bank.branch}?</h4>
-                                <p style={{ marginBottom: 0 }}>The IFSC code is <strong>{bank.ifsc}</strong>.</p>
-                            </div>
-                            <div className="glass" style={{ padding: '20px' }}>
-                                <h4 style={{ marginBottom: '8px' }}>Where is {bank.bank} {bank.branch} branch located?</h4>
-                                <p style={{ marginBottom: 0 }}>The branch is located at: {bank.address}.</p>
-                            </div>
+                            {faqs.map((faq, i) => (
+                                <div key={i} className="glass" style={{ padding: '20px' }}>
+                                    <h4 style={{ marginBottom: '8px' }}>{faq.question}</h4>
+                                    <p style={{ marginBottom: 0, fontSize: '0.95rem' }}>{faq.answer}</p>
+                                </div>
+                            ))}
                         </div>
+                    </section>
+
+                    <section className="glass" style={{ padding: '30px', marginBottom: '40px' }}>
+                        <h2>How to use {bank.bank} IFSC Code?</h2>
+                        <p style={{ fontSize: '1rem', lineHeight: '1.6' }}>
+                            You can use the IFSC code <strong>{bank.ifsc}</strong> for various electronic fund transfers:
+                        </p>
+                        <ul style={{ marginTop: '16px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                            <li style={{ fontSize: '0.9rem' }}>✅ <strong>NEFT:</strong> National Electronic Funds Transfer</li>
+                            <li style={{ fontSize: '0.9rem' }}>✅ <strong>RTGS:</strong> Real Time Gross Settlement</li>
+                            <li style={{ fontSize: '0.9rem' }}>✅ <strong>IMPS:</strong> Immediate Payment Service</li>
+                            <li style={{ fontSize: '0.9rem' }}>✅ <strong>UPI:</strong> Unified Payments Interface</li>
+                        </ul>
                     </section>
                 </div>
 

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import CopyButton from "@/components/CopyButton";
 import { Metadata } from "next";
+import JsonLd, { generateFAQSchema, generateBreadcrumbSchema } from "@/components/JsonLd";
 
 export async function generateMetadata({ params }: { params: Promise<{ code: string }> }): Promise<Metadata> {
     const { code } = await params;
@@ -28,16 +29,47 @@ export default async function PincodePage({ params }: { params: Promise<{ code: 
     const banks = getBanksByPincode(String(code));
     const localities = getNeighborhoodsByPincode(String(code));
 
+    const domain = "https://indiapincode.org";
+    const breadcrumbSchema = generateBreadcrumbSchema([
+        { name: "Home", item: `${domain}/` },
+        { name: "Pincodes", item: `${domain}/state` },
+        { name: `Pincode ${code}`, item: `${domain}/pincode/${code}` }
+    ]);
+
+    const faqs = [
+        {
+            question: `Which district is ${code} in?`,
+            answer: `Pincode ${code} is located in ${summary.district}, ${summary.state}.`
+        },
+        {
+            question: `How many post offices are in ${code}?`,
+            answer: `There are ${summary.office_count} post offices under this pincode, including ${offices[0].officename}.`
+        },
+        {
+            question: `Is ${code} a delivery pincode?`,
+            answer: `Yes, pincode ${code} has delivery offices like ${offices.find(o => o.deliverystatus === 'Delivery')?.officename || offices[0].officename}.`
+        }
+    ];
+    const faqSchema = generateFAQSchema(faqs);
+
     return (
         <div className="container fade-in" style={{ paddingTop: '40px' }}>
+            <JsonLd data={breadcrumbSchema} />
+            <JsonLd data={faqSchema} />
+
             <nav className="breadcrumb">
                 <Link href="/">Home</Link>
+                <span>/</span>
+                <Link href="/state">Pincodes</Link>
                 <span>/</span>
                 <span>Pincode {code}</span>
             </nav>
 
             <div style={{ textAlign: 'center', marginBottom: '60px' }}>
-                <h1 style={{ fontSize: '3.5rem', marginBottom: '0.5rem' }}>{code}</h1>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px', marginBottom: '10px' }}>
+                    <h1 style={{ fontSize: '3.5rem', margin: 0 }}>{code}</h1>
+                    <CopyButton code={code} label="Pincode" variant="icon" />
+                </div>
                 <p style={{ fontSize: '1.2rem', color: '#64748b' }}>
                     {summary.district}, {summary.state}
                 </p>
@@ -54,6 +86,26 @@ export default async function PincodePage({ params }: { params: Promise<{ code: 
                         <p>
                             The {code} postal code is used for all types of deliveries including Speed Post, Registered Post, and standard Courier services in the {summary.district} area.
                             It is part of the {offices[0].circlename} postal circle.
+                        </p>
+                    </section>
+
+                    {/* New Pincode Breakdown Section */}
+                    <section className="glass" style={{ padding: '30px', marginBottom: '40px', background: 'var(--accent)' }}>
+                        <h2>Postal Breakdown for {code}</h2>
+                        <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginTop: '20px' }}>
+                            {String(code).split('').map((digit, i) => (
+                                <div key={i} style={{ textAlign: 'center' }}>
+                                    <div style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--primary)', background: '#fff', width: '50px', height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '8px', border: '2px solid var(--border)', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }}>
+                                        {digit}
+                                    </div>
+                                    <div style={{ fontSize: '0.65rem', marginTop: '8px', color: '#64748b', fontWeight: 600, textTransform: 'uppercase' }}>
+                                        {i === 0 ? 'Region' : i === 1 ? 'Sub' : i === 2 ? 'Dist' : 'Office'}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        <p style={{ fontSize: '0.9rem', textAlign: 'center', marginTop: '20px', color: '#475569' }}>
+                            The first 3 digits represent the sorting district, while the last 3 identify the specific post office.
                         </p>
                     </section>
 
@@ -79,14 +131,12 @@ export default async function PincodePage({ params }: { params: Promise<{ code: 
                     <section style={{ marginBottom: '60px' }}>
                         <h2>Frequently Asked Questions</h2>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                            <div className="glass" style={{ padding: '20px' }}>
-                                <h4 style={{ marginBottom: '8px' }}>Which district is {code} in?</h4>
-                                <p style={{ marginBottom: 0, fontSize: '0.95rem' }}>Pincode {code} is located in {summary.district}, {summary.state}.</p>
-                            </div>
-                            <div className="glass" style={{ padding: '20px' }}>
-                                <h4 style={{ marginBottom: '8px' }}>Is {offices[0].officename} a delivery office?</h4>
-                                <p style={{ marginBottom: 0, fontSize: '0.95rem' }}>Yes, {offices[0].officename} is categorized as a {offices[0].deliverystatus} office under Pin Code {code}.</p>
-                            </div>
+                            {faqs.map((faq, i) => (
+                                <div key={i} className="glass" style={{ padding: '20px' }}>
+                                    <h4 style={{ marginBottom: '8px' }}>{faq.question}</h4>
+                                    <p style={{ marginBottom: 0, fontSize: '0.95rem' }}>{faq.answer}</p>
+                                </div>
+                            ))}
                         </div>
                     </section>
 
