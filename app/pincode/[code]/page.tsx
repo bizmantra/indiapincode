@@ -10,7 +10,7 @@ export async function generateMetadata({ params }: { params: Promise<{ code: str
     if (!data || !data.summary) return { title: 'Pincode Not Found' };
 
     return {
-        title: `${code} Pin Code - ${data.summary.district}, ${data.summary.state} | PinFinder`,
+        title: `${code} Pin Code - ${data.summary.district}, ${data.summary.state} | IndiaPincode`,
         description: `Find details for Pin Code ${code}. Located in ${data.summary.district}, ${data.summary.state}. Includes ${data.summary.office_count} post offices and nearby bank branches.`,
     };
 }

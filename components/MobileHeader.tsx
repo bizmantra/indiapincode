@@ -13,7 +13,7 @@ export default function MobileHeader() {
                 {/* Desktop Header */}
                 <div className="header-desktop">
                     <Link href="/" style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--primary)', textDecoration: 'none', flexShrink: 0 }}>
-                        PinFinder
+                        IndiaPincode
                     </Link>
                     <div style={{ flex: 1, maxWidth: '500px' }}>
                         <SearchBox variant="header" />
@@ -29,7 +29,7 @@ export default function MobileHeader() {
                 <div className="header-mobile">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
                         <Link href="/" style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--primary)', textDecoration: 'none' }}>
-                            PinFinder
+                            IndiaPincode
                         </Link>
                         <button
                             onClick={() => setIsMenuOpen(!isMenuOpen)}

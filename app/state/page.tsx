@@ -4,7 +4,7 @@ import { Metadata } from "next";
 import StateTable from "@/components/StateTable";
 
 export const metadata: Metadata = {
-    title: "Browse Post Offices by State - India Pincode Directory | PinFinder",
+    title: "Browse Post Offices by State - India Pincode Directory | IndiaPincode",
     description: "Find pincodes and post offices across India by browsing through states and districts. Covering 160,000+ postal codes.",
 };
 

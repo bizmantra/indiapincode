@@ -2,8 +2,8 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Privacy Policy - PinFinder India",
-    description: "Privacy policy for PinFinder India - how we collect and use data.",
+    title: "Privacy Policy - IndiaPincode India",
+    description: "Privacy policy for IndiaPincode India - how we collect and use data.",
 };
 
 export default function PrivacyPage() {
@@ -20,7 +20,7 @@ export default function PrivacyPage() {
             <section style={{ marginBottom: '40px' }}>
                 <h2>Information We Collect</h2>
                 <p>
-                    PinFinder India is a publicly accessible information service. We do not require user registration or collect personal information.
+                    IndiaPincode India is a publicly accessible information service. We do not require user registration or collect personal information.
                 </p>
                 <h3 style={{ fontSize: '1.1rem', marginTop: '20px' }}>Automatically Collected Information</h3>
                 <p>When you visit our website, we may automatically collect:</p>

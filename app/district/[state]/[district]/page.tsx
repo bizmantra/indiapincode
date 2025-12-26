@@ -10,7 +10,7 @@ export async function generateMetadata({ params }: { params: Promise<{ state: st
     const districtDisplayName = district.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 
     return {
-        title: `Pincodes in ${districtDisplayName}, ${stateDisplayName} | PinFinder`,
+        title: `Pincodes in ${districtDisplayName}, ${stateDisplayName} | IndiaPincode`,
         description: `Browse all pincodes and post offices in ${districtDisplayName} district of ${stateDisplayName}. Get accurate postal information for the region.`,
     };
 }

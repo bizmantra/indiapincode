@@ -4,7 +4,7 @@ import { Metadata } from "next";
 import SearchBox from "@/components/SearchBox";
 
 export const metadata: Metadata = {
-    title: "Find Bank IFSC Codes - 170,000+ Branches Across India | PinFinder",
+    title: "Find Bank IFSC Codes - 170,000+ Branches Across India | IndiaPincode",
     description: "Search IFSC codes for all major banks in India. Find branch details, addresses, and MICR codes for SBI, HDFC, ICICI, and 150+ other banks.",
 };
 

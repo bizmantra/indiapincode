@@ -7,16 +7,16 @@ import MobileHeader from "@/components/MobileHeader";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "PinFinder India - 160,000+ Pincodes, 154,000+ Localities & Bank IFSC Codes",
+  title: "IndiaPincode India - 160,000+ Pincodes, 154,000+ Localities & Bank IFSC Codes",
   description: "Quickly find any pincode, locality, or bank IFSC in India. Search 160,000+ post offices, 154,000+ localities, and 170,000+ bank branches.",
   openGraph: {
-    title: "PinFinder India - Find Any Pincode or IFSC Code",
+    title: "IndiaPincode India - Find Any Pincode or IFSC Code",
     description: "Search 160,000+ pincodes, 154,000+ localities, and 170,000+ bank branches across India.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "PinFinder India",
+    title: "IndiaPincode India",
     description: "Search 160,000+ pincodes, 154,000+ localities, and 170,000+ bank branches.",
   },
 };
@@ -35,7 +35,7 @@ export default function RootLayout({
           <div className="container">
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '40px' }}>
               <div>
-                <h3 style={{ marginBottom: '1rem' }}>PinFinder</h3>
+                <h3 style={{ marginBottom: '1rem' }}>IndiaPincode</h3>
                 <p>The fastest and most reliable pincode & IFSC lookup tool in India. Programmatically updated with the latest India Post and RBI data.</p>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px' }}>
@@ -57,7 +57,7 @@ export default function RootLayout({
               </div>
             </div>
             <div style={{ marginTop: '40px', paddingTop: '20px', borderTop: '1px solid var(--border)', textAlign: 'center', fontSize: '0.8rem', color: '#64748b' }}>
-              © {new Date().getFullYear()} PinFinder India. Latest data for 2025. Not affiliated with India Post or RBI.
+              © {new Date().getFullYear()} IndiaPincode India. Latest data for 2025. Not affiliated with India Post or RBI.
             </div>
           </div>
         </footer>

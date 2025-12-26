@@ -2,8 +2,8 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Disclaimer - PinFinder India",
-    description: "Important disclaimer about the use of pincode and IFSC code data on PinFinder India.",
+    title: "Disclaimer - IndiaPincode India",
+    description: "Important disclaimer about the use of pincode and IFSC code data on IndiaPincode India.",
 };
 
 export default function DisclaimerPage() {
@@ -20,7 +20,7 @@ export default function DisclaimerPage() {
             <section style={{ marginBottom: '40px' }}>
                 <h2>Information Accuracy</h2>
                 <p>
-                    PinFinder India provides pincode, IFSC code, and related postal/banking information for informational purposes only.
+                    IndiaPincode India provides pincode, IFSC code, and related postal/banking information for informational purposes only.
                     While we strive to maintain accurate and up-to-date information by programmatically updating our database with official sources,
                     we cannot guarantee 100% accuracy or completeness of the data.
                 </p>
@@ -29,7 +29,7 @@ export default function DisclaimerPage() {
             <section style={{ marginBottom: '40px' }}>
                 <h2>Not an Official Government Website</h2>
                 <p>
-                    <strong>PinFinder India is NOT affiliated with, endorsed by, or connected to:</strong>
+                    <strong>IndiaPincode India is NOT affiliated with, endorsed by, or connected to:</strong>
                 </p>
                 <ul style={{ marginLeft: '20px', lineHeight: 1.8 }}>
                     <li>India Post (Department of Posts, Government of India)</li>
@@ -61,7 +61,7 @@ export default function DisclaimerPage() {
             <section style={{ marginBottom: '40px' }}>
                 <h2>No Liability</h2>
                 <p>
-                    PinFinder India and its operators shall not be held liable for any errors, omissions, or inaccuracies in the information provided,
+                    IndiaPincode India and its operators shall not be held liable for any errors, omissions, or inaccuracies in the information provided,
                     or for any actions taken based on this information. We are not responsible for:
                 </p>
                 <ul style={{ marginLeft: '20px', lineHeight: 1.8 }}>

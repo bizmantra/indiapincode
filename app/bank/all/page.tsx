@@ -4,7 +4,7 @@ import { Metadata } from "next";
 import BankTable from "@/components/BankTable";
 
 export const metadata: Metadata = {
-    title: "All Banks in India - Complete Directory | PinFinder",
+    title: "All Banks in India - Complete Directory | IndiaPincode",
     description: "Browse the complete directory of all banks operating in India. Find IFSC codes, branch counts, and details for 150+ banks.",
 };
 

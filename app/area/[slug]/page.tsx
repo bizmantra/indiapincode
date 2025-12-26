@@ -10,7 +10,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     if (!area) return { title: 'Area Not Found' };
 
     return {
-        title: `${area.name} Pincode, ${area.district} - Postal Code & Details | PinFinder`,
+        title: `${area.name} Pincode, ${area.district} - Postal Code & Details | IndiaPincode`,
         description: `Find the official pincode for ${area.name} in ${area.district}, ${area.state}. Get detailed delivery information and post office details for ${area.name}.`,
     };
 }

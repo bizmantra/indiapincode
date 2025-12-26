@@ -32,9 +32,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Large database files (use pincode.db instead)
-pincodes.sqlite
-*.sqlite
+# Large database files - using Git LFS for pincodes.sqlite
+# *.sqlite
 
 # Backup files
 *.bak

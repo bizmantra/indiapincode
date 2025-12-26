@@ -12,7 +12,7 @@ export async function generateMetadata({ params }: { params: Promise<{ bank: str
     if (!bank) return { title: 'Bank Not Found' };
 
     return {
-        title: `${bank.bank_name} Branches in ${districtName} - IFSC & Branch Find | PinFinder`,
+        title: `${bank.bank_name} Branches in ${districtName} - IFSC & Branch Find | IndiaPincode`,
         description: `Complete list of ${bank.bank_name} branches in ${districtName}. Find IFSC codes, MICR codes, and branch addresses.`,
     };
 }

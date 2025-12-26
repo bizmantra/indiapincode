@@ -10,7 +10,7 @@ export async function generateMetadata({ params }: { params: Promise<{ ifsc: str
     if (!bank) return { title: 'IFSC Not Found' };
 
     return {
-        title: `${bank.ifsc} IFSC Code - ${bank.bank}, ${bank.branch} Branch | PinFinder`,
+        title: `${bank.ifsc} IFSC Code - ${bank.bank}, ${bank.branch} Branch | IndiaPincode`,
         description: `Get IFSC code ${bank.ifsc}, MICR code, branch address, and contact details for ${bank.bank} ${bank.branch} branch in ${bank.district}, ${bank.state}.`,
     };
 }
