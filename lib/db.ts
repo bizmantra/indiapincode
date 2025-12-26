@@ -2,7 +2,7 @@ import Database from 'better-sqlite3';
 import path from 'path';
 
 const dbPath = path.resolve(process.cwd(), 'pincodes.sqlite');
-const db = new Database(dbPath, { readonly: true });
+const db = new Database(dbPath, { readonly: false }); // Set to false to allow index creation
 
 export interface PincodeSummary {
     pincode: number | string;
@@ -167,5 +167,91 @@ export function searchPincodes(query: string) {
         LIMIT 10
     `).all(`${query}%`, `${query}%`) as PincodeSummary[];
 }
+
+// Full Text Search & Fuzzy Search Initialization
+export function initializeSearchIndex() {
+    try {
+        // Register Levenshtein function for fuzzy matching
+        db.function('levenshtein', (a: string, b: string) => {
+            if (!a || !b) return (a || b || "").length;
+            const matrix = Array.from({ length: a.length + 1 }, (_, i) => [i]);
+            for (let j = 1; j <= b.length; j++) matrix[0][j] = j;
+            for (let i = 1; i <= a.length; i++) {
+                for (let j = 1; j <= b.length; j++) {
+                    matrix[i][j] = a[i - 1] === b[j - 1]
+                        ? matrix[i - 1][j - 1]
+                        : Math.min(matrix[i - 1][j - 1], matrix[i][j - 1], matrix[i - 1][j]) + 1;
+                }
+            }
+            return matrix[a.length][b.length];
+        });
+
+        // Create FTS5 virtual table if it doesn't exist
+        // Note: Removed content='pincode_summary' to make it a self-contained index for multiple tables
+        db.exec(`
+            CREATE VIRTUAL TABLE IF NOT EXISTS search_index USING fts5(
+                content_id,
+                type,
+                title,
+                subtitle,
+                slug,
+                tokenize='unicode61'
+            );
+        `);
+
+        // Check if index needs population (simplified check)
+        const count = db.prepare('SELECT count(*) as count FROM search_index').get() as { count: number };
+        if (count.count === 0) {
+            console.log('Populating search index...');
+            db.exec(`
+                INSERT INTO search_index(content_id, type, title, subtitle, slug)
+                SELECT pincode, 'pincode', pincode, district || ', ' || state, pincode FROM pincode_summary;
+                
+                INSERT INTO search_index(content_id, type, title, subtitle, slug)
+                SELECT ifsc, 'bank', bank || ' - ' || branch, ifsc, ifsc FROM banks;
+                
+                INSERT INTO search_index(content_id, type, title, subtitle, slug)
+                SELECT slug, 'area', name, district || ', ' || state, slug FROM neighborhoods;
+            `);
+            console.log('Search index populated successfully.');
+        }
+    } catch (error) {
+        console.error('Search index initialization failed:', error);
+    }
+}
+
+export function searchFTS(query: string, limit: number = 8) {
+    if (!query) return [];
+
+    // First try exact FTS match (very fast)
+    let results = db.prepare(`
+        SELECT content_id, type, title, subtitle, slug, rank
+        FROM search_index 
+        WHERE search_index MATCH ?
+        ORDER BY rank
+        LIMIT ?
+    `).all(`${query}*`, limit) as any[];
+
+    // If few results, complement with fuzzy search (slower but typo tolerant)
+    if (results.length < 3 && query.length > 3) {
+        const fuzzyResults = db.prepare(`
+            SELECT content_id, type, title, subtitle, slug, 1 as rank
+            FROM search_index
+            WHERE levenshtein(title, ?) <= 2 OR title LIKE ?
+            LIMIT ?
+        `).all(query, `%${query}%`, limit - results.length);
+
+        // Merge without duplicates
+        const existingIds = new Set(results.map(r => r.content_id));
+        fuzzyResults.forEach((r: any) => {
+            if (!existingIds.has(r.content_id)) results.push(r);
+        });
+    }
+
+    return results;
+}
+
+// Initialize on load
+initializeSearchIndex();
 
 export default db;
