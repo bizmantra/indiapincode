@@ -100,39 +100,6 @@ a:hover {
   border-bottom: 1px solid var(--border);
 }
 
-/* Stats - Inline text instead of cards */
-.stats {
-  display: flex;
-  justify-content: center;
-  gap: 32px;
-  margin-top: 24px;
-  flex-wrap: wrap;
-}
-
-@media (max-width: 768px) {
-  .stats {
-    flex-direction: column;
-    gap: 16px;
-    align-items: center;
-  }
-}
-
-.stat-card {
-  text-align: center;
-}
-
-.stat-number {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--foreground);
-  margin-bottom: 4px;
-}
-
-.stat-label {
-  font-size: 0.875rem;
-  color: var(--muted);
-}
-
 /* Search */
 .search-container {
   max-width: 600px;
