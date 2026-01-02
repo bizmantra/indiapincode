@@ -291,6 +291,67 @@ export function searchFTS(query: string, limit: number = 8) {
     return results;
 }
 
+// Sitemap generation helpers
+export function getAllPincodes(limit?: number, offset?: number) {
+    let query = 'SELECT pincode FROM pincode_summary ORDER BY pincode ASC';
+    if (limit !== undefined && offset !== undefined) {
+        query += ` LIMIT ${limit} OFFSET ${offset}`;
+    }
+    return db.prepare(query).all() as { pincode: number }[];
+}
+
+export function getAllNeighborhoods(limit?: number, offset?: number) {
+    let query = 'SELECT slug FROM neighborhoods ORDER BY slug ASC';
+    if (limit !== undefined && offset !== undefined) {
+        query += ` LIMIT ${limit} OFFSET ${offset}`;
+    }
+    return db.prepare(query).all() as { slug: string }[];
+}
+
+export function getAllIFSCCodes(limit?: number, offset?: number) {
+    let query = 'SELECT ifsc FROM banks ORDER BY ifsc ASC';
+    if (limit !== undefined && offset !== undefined) {
+        query += ` LIMIT ${limit} OFFSET ${offset}`;
+    }
+    return db.prepare(query).all() as { ifsc: string }[];
+}
+
+export function getAllBankStates() {
+    return db.prepare(`
+        SELECT DISTINCT bank_slug, state_slug 
+        FROM banks 
+        WHERE bank_slug IS NOT NULL AND state_slug IS NOT NULL
+        ORDER BY bank_slug, state_slug
+    `).all() as { bank_slug: string, state_slug: string }[];
+}
+
+export function getAllBankDistricts() {
+    return db.prepare(`
+        SELECT DISTINCT bank_slug, state_slug, district_slug 
+        FROM banks 
+        WHERE bank_slug IS NOT NULL AND state_slug IS NOT NULL AND district_slug IS NOT NULL
+        ORDER BY bank_slug, state_slug, district_slug
+    `).all() as { bank_slug: string, state_slug: string, district_slug: string }[];
+}
+
+export function getTotalCounts() {
+    const pincodes = db.prepare('SELECT COUNT(*) as count FROM pincode_summary').get() as { count: number };
+    const neighborhoods = db.prepare('SELECT COUNT(*) as count FROM neighborhoods').get() as { count: number };
+    const ifscCodes = db.prepare('SELECT COUNT(*) as count FROM banks').get() as { count: number };
+    const states = db.prepare('SELECT COUNT(*) as count FROM states').get() as { count: number };
+    const districts = db.prepare('SELECT COUNT(*) as count FROM districts').get() as { count: number };
+    const uniqueBanks = db.prepare('SELECT COUNT(*) as count FROM unique_banks').get() as { count: number };
+
+    return {
+        pincodes: pincodes.count,
+        neighborhoods: neighborhoods.count,
+        ifscCodes: ifscCodes.count,
+        states: states.count,
+        districts: districts.count,
+        uniqueBanks: uniqueBanks.count
+    };
+}
+
 // Initialize on load
 initializeSearchIndex();
 

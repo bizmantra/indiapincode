@@ -20,6 +20,7 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  position: relative;
 }
 
 body {
@@ -382,6 +383,58 @@ footer a:hover {
 
   .glass {
     padding: 16px;
+  }
+}
+
+/* Pincode Page Specific */
+.pincode-heading {
+  font-size: 3.5rem;
+  margin: 0;
+}
+
+.main-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 40px;
+}
+
+.pincode-digit-box {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--primary);
+  background: #fff;
+  width: 50px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 2px solid var(--border);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+@media (max-width: 768px) {
+  .pincode-heading {
+    font-size: 2.5rem;
+  }
+
+  .main-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .pincode-digit-box {
+    width: 42px;
+    height: 52px;
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .pincode-digit-box {
+    width: 38px;
+    height: 48px;
+    font-size: 1.25rem;
   }
 }
 

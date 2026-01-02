@@ -67,7 +67,7 @@ export default async function PincodePage({ params }: { params: Promise<{ code: 
 
             <div style={{ textAlign: 'center', marginBottom: '60px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px', marginBottom: '10px' }}>
-                    <h1 style={{ fontSize: '3.5rem', margin: 0 }}>{code}</h1>
+                    <h1 className="pincode-heading">{code}</h1>
                     <CopyButton code={code} label="Pincode" variant="icon" />
                 </div>
                 <p style={{ fontSize: '1.2rem', color: '#64748b' }}>
@@ -75,7 +75,7 @@ export default async function PincodePage({ params }: { params: Promise<{ code: 
                 </p>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '40px' }}>
+            <div className="grid main-grid">
                 <div>
                     <section className="glass" style={{ padding: '30px', marginBottom: '40px' }}>
                         <h2>About Pincode {code}</h2>
@@ -92,10 +92,10 @@ export default async function PincodePage({ params }: { params: Promise<{ code: 
                     {/* New Pincode Breakdown Section */}
                     <section className="glass" style={{ padding: '30px', marginBottom: '40px', background: 'var(--accent)' }}>
                         <h2>Postal Breakdown for {code}</h2>
-                        <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginTop: '20px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginTop: '20px', flexWrap: 'wrap' }}>
                             {String(code).split('').map((digit, i) => (
                                 <div key={i} style={{ textAlign: 'center' }}>
-                                    <div style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--primary)', background: '#fff', width: '50px', height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '8px', border: '2px solid var(--border)', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }}>
+                                    <div className="pincode-digit-box">
                                         {digit}
                                     </div>
                                     <div style={{ fontSize: '0.65rem', marginTop: '8px', color: '#64748b', fontWeight: 600, textTransform: 'uppercase' }}>
