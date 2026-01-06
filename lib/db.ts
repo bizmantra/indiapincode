@@ -320,7 +320,8 @@ export function getAllBankStates() {
     return db.prepare(`
         SELECT DISTINCT bank_slug, state_slug 
         FROM banks 
-        WHERE bank_slug IS NOT NULL AND state_slug IS NOT NULL
+        WHERE bank_slug IS NOT NULL AND bank_slug != '' 
+        AND state_slug IS NOT NULL AND state_slug != ''
         ORDER BY bank_slug, state_slug
     `).all() as { bank_slug: string, state_slug: string }[];
 }
@@ -342,13 +343,16 @@ export function getTotalCounts() {
     const districts = db.prepare('SELECT COUNT(*) as count FROM districts').get() as { count: number };
     const uniqueBanks = db.prepare('SELECT COUNT(*) as count FROM unique_banks').get() as { count: number };
 
+    const bankStates = db.prepare("SELECT COUNT(DISTINCT bank_slug || state_slug) as count FROM banks WHERE bank_slug IS NOT NULL AND bank_slug != '' AND state_slug IS NOT NULL AND state_slug != ''").get() as { count: number };
+
     return {
         pincodes: pincodes.count,
         neighborhoods: neighborhoods.count,
         ifscCodes: ifscCodes.count,
         states: states.count,
         districts: districts.count,
-        uniqueBanks: uniqueBanks.count
+        uniqueBanks: uniqueBanks.count,
+        bankStates: bankStates.count
     };
 }
 

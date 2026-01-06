@@ -1,7 +1,11 @@
 import { MetadataRoute } from 'next';
+import { getTotalCounts } from '@/lib/db';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const baseUrl = 'https://indiapincode.org';
+
+    // Get exact counts from database
+    const counts = getTotalCounts();
 
     // Calculate number of chunks needed for each type
     const PINCODES_PER_SITEMAP = 5000;
@@ -9,16 +13,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const IFSC_PER_SITEMAP = 500;
     const BANK_STATES_PER_SITEMAP = 1000;
 
-    // Total counts (approximate)
-    const totalPincodes = 19097;
-    const totalAreas = 154813;
-    const totalIFSC = 177018;
-    const totalBankStates = 35000; // Approximate bank-state combinations
-
-    const pincodeChunks = Math.ceil(totalPincodes / PINCODES_PER_SITEMAP);
-    const areaChunks = Math.ceil(totalAreas / AREAS_PER_SITEMAP);
-    const ifscChunks = Math.ceil(totalIFSC / IFSC_PER_SITEMAP);
-    const bankStateChunks = Math.ceil(totalBankStates / BANK_STATES_PER_SITEMAP);
+    const pincodeChunks = Math.ceil(counts.pincodes / PINCODES_PER_SITEMAP);
+    const areaChunks = Math.ceil(counts.neighborhoods / AREAS_PER_SITEMAP);
+    const ifscChunks = Math.ceil(counts.ifscCodes / IFSC_PER_SITEMAP);
+    const bankStateChunks = Math.ceil(counts.bankStates / BANK_STATES_PER_SITEMAP);
 
     const sitemaps: MetadataRoute.Sitemap = [
         // Static pages sitemap
