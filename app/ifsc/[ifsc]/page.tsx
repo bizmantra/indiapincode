@@ -13,6 +13,9 @@ export async function generateMetadata({ params }: { params: Promise<{ ifsc: str
     return {
         title: `${bank.ifsc} IFSC Code - ${bank.bank}, ${bank.branch} Branch | IndiaPincode`,
         description: `Get IFSC code ${bank.ifsc}, MICR code, branch address, and contact details for ${bank.bank} ${bank.branch} branch in ${bank.district}, ${bank.state}.`,
+        alternates: {
+            canonical: `https://indiapincode.org/ifsc/${ifsc}`,
+        }
     };
 }
 

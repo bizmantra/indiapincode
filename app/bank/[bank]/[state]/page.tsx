@@ -14,6 +14,9 @@ export async function generateMetadata({ params }: { params: Promise<{ bank: str
     return {
         title: `${bank.bank_name} IFSC Codes in ${stateName} - Browse by District | IndiaPincode`,
         description: `Find IFSC codes for ${bank.bank_name} in various districts of ${stateName}. Browse branches and contact details.`,
+        alternates: {
+            canonical: `https://indiapincode.org/bank/${bankSlug}/${stateSlug}`,
+        }
     };
 }
 

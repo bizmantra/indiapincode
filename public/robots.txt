@@ -4,5 +4,3 @@ Allow: /
 # Sitemap
 Sitemap: https://indiapincode.org/sitemap.xml
 
-# Crawl delay (optional, be nice to servers)
-Crawl-delay: 1

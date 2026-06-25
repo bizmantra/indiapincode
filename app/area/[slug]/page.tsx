@@ -12,6 +12,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     return {
         title: `${area.name} Pincode, ${area.district} - Postal Code & Details | IndiaPincode`,
         description: `Find the official pincode for ${area.name} in ${area.district}, ${area.state}. Get detailed delivery information and post office details for ${area.name}.`,
+        alternates: {
+            canonical: `https://indiapincode.org/area/${slug}`,
+        }
     };
 }
 

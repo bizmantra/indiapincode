@@ -13,6 +13,9 @@ export async function generateMetadata({ params }: { params: Promise<{ code: str
     return {
         title: `${code} Pin Code - ${data.summary.district}, ${data.summary.state} | IndiaPincode`,
         description: `Find details for Pin Code ${code}. Located in ${data.summary.district}, ${data.summary.state}. Includes ${data.summary.office_count} post offices and nearby bank branches.`,
+        alternates: {
+            canonical: `https://indiapincode.org/pincode/${code}`,
+        }
     };
 }
 
