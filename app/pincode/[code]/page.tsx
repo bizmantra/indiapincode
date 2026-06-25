@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: { params: Promise<{ code: str
         title: `${code} Pin Code - ${data.summary.district}, ${data.summary.state} | IndiaPincode`,
         description: `Find details for Pin Code ${code}. Located in ${data.summary.district}, ${data.summary.state}. Includes ${data.summary.office_count} post offices and nearby bank branches.`,
         alternates: {
-            canonical: `https://indiapincode.org/pincode/${code}`,
+            canonical: `https://www.indiapincode.org/pincode/${code}`,
         }
     };
 }
@@ -32,7 +32,7 @@ export default async function PincodePage({ params }: { params: Promise<{ code: 
     const banks = getBanksByPincode(String(code));
     const localities = getNeighborhoodsByPincode(String(code));
 
-    const domain = "https://indiapincode.org";
+    const domain = "https://www.indiapincode.org";
     const breadcrumbSchema = generateBreadcrumbSchema([
         { name: "Home", item: `${domain}/` },
         { name: "Pincodes", item: `${domain}/state` },

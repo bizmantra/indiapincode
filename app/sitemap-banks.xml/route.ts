@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { getUniqueBanks } from '@/lib/db';
 
 export async function GET() {
-    const baseUrl = 'https://indiapincode.org';
+    const baseUrl = 'https://www.indiapincode.org';
     const banks = getUniqueBanks();
 
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>

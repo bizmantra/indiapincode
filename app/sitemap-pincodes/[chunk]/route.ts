@@ -7,7 +7,7 @@ export async function GET(
     request: Request,
     context: { params: Promise<{ chunk: string }> }
 ) {
-    const baseUrl = 'https://indiapincode.org';
+    const baseUrl = 'https://www.indiapincode.org';
     const { chunk } = await context.params;
     const chunkNum = parseInt(chunk.replace('.xml', ''));
     const offset = chunkNum * PINCODES_PER_SITEMAP;

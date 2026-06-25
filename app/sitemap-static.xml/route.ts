@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 export async function GET() {
-    const baseUrl = 'https://indiapincode.org';
+    const baseUrl = 'https://www.indiapincode.org';
 
     const staticPages = [
         { url: '/', priority: 1.0, changefreq: 'daily' },

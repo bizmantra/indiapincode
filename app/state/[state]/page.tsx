@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: { params: Promise<{ state: st
         title: `Pincodes in ${displayName} - Browse All Districts | IndiaPincode`,
         description: `Complete list of pincodes and post offices in ${displayName}. Browse by district to find postal codes across the state.`,
         alternates: {
-            canonical: `https://indiapincode.org/state/${state}`,
+            canonical: `https://www.indiapincode.org/state/${state}`,
         }
     };
 }

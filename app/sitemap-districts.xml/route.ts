@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { getStates, getDistrictsByState } from '@/lib/db';
 
 export async function GET() {
-    const baseUrl = 'https://indiapincode.org';
+    const baseUrl = 'https://www.indiapincode.org';
     const states = getStates();
 
     const districtUrls: string[] = [];

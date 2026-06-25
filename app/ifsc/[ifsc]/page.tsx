@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: { params: Promise<{ ifsc: str
         title: `${bank.ifsc} IFSC Code - ${bank.bank}, ${bank.branch} Branch | IndiaPincode`,
         description: `Get IFSC code ${bank.ifsc}, MICR code, branch address, and contact details for ${bank.bank} ${bank.branch} branch in ${bank.district}, ${bank.state}.`,
         alternates: {
-            canonical: `https://indiapincode.org/ifsc/${ifsc}`,
+            canonical: `https://www.indiapincode.org/ifsc/${ifsc}`,
         }
     };
 }
@@ -27,7 +27,7 @@ export default async function IFSCDetailPage({ params }: { params: Promise<{ ifs
         notFound();
     }
 
-    const domain = "https://indiapincode.org";
+    const domain = "https://www.indiapincode.org";
     const breadcrumbSchema = generateBreadcrumbSchema([
         { name: "Home", item: `${domain}/` },
         { name: "Banks", item: `${domain}/bank` },

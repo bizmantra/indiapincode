@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { getTotalCounts } from '@/lib/db';
 
 export async function GET() {
-    const baseUrl = 'https://indiapincode.org';
+    const baseUrl = 'https://www.indiapincode.org';
     const counts = getTotalCounts();
 
     const PINCODES_PER_SITEMAP = 5000;
