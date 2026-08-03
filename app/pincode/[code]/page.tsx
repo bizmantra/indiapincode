@@ -5,8 +5,15 @@ import CopyButton from "@/components/CopyButton";
 import { Metadata } from "next";
 import JsonLd, { generateFAQSchema, generateBreadcrumbSchema } from "@/components/JsonLd";
 
+const PINCODE_REGEX = /^\d{6}$/;
+
 export async function generateMetadata({ params }: { params: Promise<{ code: string }> }): Promise<Metadata> {
     const { code } = await params;
+    
+    if (!PINCODE_REGEX.test(code)) {
+        return { title: 'Pincode Not Found' };
+    }
+
     const data = getPincodeDetail(code);
     if (!data || !data.summary) return { title: 'Pincode Not Found' };
 
@@ -21,6 +28,11 @@ export async function generateMetadata({ params }: { params: Promise<{ code: str
 
 export default async function PincodePage({ params }: { params: Promise<{ code: string }> }) {
     const { code } = await params;
+
+    if (!PINCODE_REGEX.test(code)) {
+        notFound();
+    }
+
     const data = getPincodeDetail(code);
 
     if (!data || !data.summary) {

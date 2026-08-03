@@ -5,8 +5,15 @@ import { Metadata } from "next";
 import CopyButton from "@/components/CopyButton";
 import JsonLd, { generateFAQSchema, generateBreadcrumbSchema } from "@/components/JsonLd";
 
+const IFSC_REGEX = /^[A-Z]{4}0[A-Z0-9]{6}$/i;
+
 export async function generateMetadata({ params }: { params: Promise<{ ifsc: string }> }): Promise<Metadata> {
     const { ifsc } = await params;
+    
+    if (!IFSC_REGEX.test(ifsc)) {
+        return { title: 'IFSC Not Found' };
+    }
+
     const bank = getBankByIFSC(ifsc);
     if (!bank) return { title: 'IFSC Not Found' };
 
@@ -21,6 +28,11 @@ export async function generateMetadata({ params }: { params: Promise<{ ifsc: str
 
 export default async function IFSCDetailPage({ params }: { params: Promise<{ ifsc: string }> }) {
     const { ifsc } = await params;
+
+    if (!IFSC_REGEX.test(ifsc)) {
+        notFound();
+    }
+
     const bank = getBankByIFSC(ifsc);
 
     if (!bank) {
